@@ -9,11 +9,16 @@
         <div style="position: absolute; top: 0; right: 0; width: 300px; height: 100vh; background-color: rgb(150, 100, 250);">
             <h2 style="text-align: center; color: rgb(25, 0, 50);">Controls</h2>
             <hr style="border-color: rgb(25, 0, 50);" />
-            <div style="padding: 10px 20px; text-align: center;">
-                <label style="margin-right: 20px;">W: </label><input id="w" type="range" style="accent-color: rgb(100, 50, 200);" value="0" min="-15" max="15" step="0.1" />
+            <div style="padding: 10px 20px;">
+                <label style="display: inline-block; width: 120px;"><b>W Dimensions</b>: </label><input id="w" type="range" style="display: inline-block; width: 120px; accent-color: rgb(100, 50, 200);" value="0" min="-15" max="15" step="0.1" />
                 <br />
-                <label style="margin-right: 20px;">X Rotation: </label><input id="rotX" type="range" style="accent-color: rgb(100, 50, 200);" value="-0.25" min="-0.5" max="0.5" step="0.01" />
+                <label style="display: inline-block; width: 120px;"><b>X Rotation</b>: </label><input id="rotX" type="range" style="display: inline-block; width: 120px; accent-color: rgb(100, 50, 200);" value="-0.25" min="-0.5" max="0.5" step="0.01" />
             </div>
+            <br />
+            <label style="display: block; margin-left: 20px;margin-top: 20px; color: rgb(25, 0, 50);">Left/Right Arrow: <b>Translate X</b></label>
+            <label style="display: block; margin-left: 20px;margin-top: 20px; color: rgb(25, 0, 50);">W/S Key: <b>Translate Y</b></label>
+            <label style="display: block; margin-left: 20px;margin-top: 20px; color: rgb(25, 0, 50);">Up/Down Arrow: <b>Translate Z</b></label>
+            <label style="display: block; margin-left: 20px;margin-top: 20px; color: rgb(25, 0, 50);">A/S Key: <b>Rotate Y</b></label>
         </div>
         <div style="position: absolute; display: flex; bottom: 0; width: 200px; height: 50px; align-items: center; justify-content: center; border-top-right-radius: 20px; background-color: rgb(150, 100, 250);">
             <label style="font-size: 18px; font-weight: 600; color: rgb(25, 0, 50);">Matthew Perlman</label>
