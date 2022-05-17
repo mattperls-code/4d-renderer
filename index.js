@@ -132,7 +132,7 @@ const mainScene = new Scene(
     new Camera(
         new Vec4(0, 2.5, -7.5, 0),
         new Vec2(0, 0),
-        120 * Math.PI / 180,
+        90 * Math.PI / 180,
         1
     ),
     [
@@ -320,8 +320,8 @@ const updateScene = () => {
     }
 
     mainScene.camera.pos.w = parseFloat(document.getElementById("w").value)
-
     mainScene.camera.rot.x = parseFloat(document.getElementById("rotX").value)
+    mainScene.camera.fov = parseFloat(document.getElementById("fov").value * Math.PI / 180)
 
     mainScene.render(canvas, ctx)
     requestAnimationFrame(updateScene)
