@@ -5,15 +5,16 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
         <script src="index.js" defer></script>
     </head>
-    <body style="margin: 0;">
+    <body>
         <canvas id="canvas"></canvas>
-        <div style="position: absolute; display: flex; justify-content: center; align-items: center; top: 0; left: calc(50vw - 350px); width: 700px; height: 100px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; background-color: rgb(0, 0, 0);">
-            <h1 style="font-family: 'Roboto', sans-serif; font-size: 32px; font-weight: 600; color: rgb(230, 230, 230);">4D Cube Renderer - Matthew Perlman</h1>
-        </div>
-        <div style="position: absolute; display: flex; justify-content: center; align-items: center; bottom: 0; left: calc(50vw - 250px); width: 500px; height: 75px; background-color: rgb(0, 0, 0); border-top-left-radius: 20px; border-top-right-radius: 20px;">
-            <label style="font-family: 'Roboto', sans-serif; font-size: 18px; font-weight: 600; color: rgb(230, 230, 230); margin-right: 20px;"><b>Rotation</b>: </label><input id="w" type="range" style="display: inline-block; width: 250px; accent-color: rgb(200, 200, 200);" value="0" min="0" max="6.28" step="0.01" />
+        <header>
+            <h1>4D Hypercube Renderer - Matthew Perlman</h1>
+        </header>
+        <div class="controls-container">
+            <label><b>Rotation</b>: </label><input id="w" type="range" value="0" min="0" max="6.28" step="0.01" />
         </div>
     </body>
 </html>
