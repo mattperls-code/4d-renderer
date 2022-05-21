@@ -37,14 +37,16 @@ class Vec4 {
         this.z = z
     }
 
-    static to3D(v, cameraW){
-        const scale = 0.25 * Math.sin(cameraW - (2 * v.w - 1) * Math.PI / 2)
-        const offset = 0.25 * Math.cos(cameraW - (2 * v.w - 1) * Math.PI / 2)
+    static to3D(v, cameraW, cosTheta, sinTheta){
+        const vX = (v.x * cosTheta + v.w * sinTheta)
+        const vW = (v.w * cosTheta - v.x * sinTheta)
+
+        const deltaW = (vW - cameraW)
 
         return new Vec3(
-            v.x - (v.x * scale) + offset,
-            v.y - (v.y * scale),
-            v.z - (v.z * scale)
+            vX / deltaW,
+            v.y / deltaW,
+            v.z / deltaW
         )
     }
 }
@@ -59,8 +61,9 @@ class Camera {
 }
 
 class Scene {
-    constructor(camera, segments, dimensionalEdgeColor, firstDimensionColor, secondDimensionColor, bgColor){
+    constructor(camera, theta, segments, dimensionalEdgeColor, firstDimensionColor, secondDimensionColor, bgColor){
         this.camera = camera
+        this.theta = theta
         this.segments = segments
 
         this.dimensionalEdgeColor = dimensionalEdgeColor
@@ -79,10 +82,13 @@ class Scene {
         ctx.fillRect(0, 0, canvas.width, canvas.height)
 
         const screenSpaceSegments = []
+
+        const cosTheta = Math.cos(this.theta)
+        const sinTheta = Math.sin(this.theta)
         
         this.segments.forEach(segment => {
-            let p1 = Vec4.to3D(segment[0], this.camera.pos.w)
-            let p2 = Vec4.to3D(segment[1], this.camera.pos.w)
+            let p1 = Vec4.to3D(segment[0], this.camera.pos.w, cosTheta, sinTheta)
+            let p2 = Vec4.to3D(segment[1], this.camera.pos.w, cosTheta, sinTheta)
 
             p1 = Vec3.subtract(p1, this.camera.pos)
             p2 = Vec3.subtract(p2, this.camera.pos)
@@ -100,7 +106,7 @@ class Scene {
                 let color = this.dimensionalEdgeColor
 
                 if(segment[0].w == segment[1].w){
-                    if(segment[0].w == 0){
+                    if(segment[0].w == 1){
                         color = this.firstDimensionColor
                     } else {
                         color = this.secondDimensionColor
@@ -119,7 +125,7 @@ class Scene {
             }
         })
 
-        ctx.lineWidth = 10
+        ctx.lineWidth = 8
 
         screenSpaceSegments.forEach(segment => {
             ctx.strokeStyle = segment[2]
@@ -139,63 +145,64 @@ const ctx = canvas.getContext("2d")
 
 const mainScene = new Scene(
     new Camera(
-        new Vec4(0, 2.5, -10, 0),
+        new Vec4(0, 2.5, -10, -2),
         new Vec2(-13.5 * Math.PI / 180, 0),
-        100 * Math.PI / 180,
+        105 * Math.PI / 180,
         1
     ),
+    0,
     [
-        /*  W=0 Cube  */
+        /*  W=-1 Cube  */
         // front face
         [
-            new Vec4(-1, 1, -1, 0),
-            new Vec4(1, 1, -1, 0),
+            new Vec4(-1, 1, -1, -1),
+            new Vec4(1, 1, -1, -1),
         ],
         [
-            new Vec4(1, 1, -1, 0),
-            new Vec4(1, -1, -1, 0)
+            new Vec4(1, 1, -1, -1),
+            new Vec4(1, -1, -1, -1)
         ],
         [
-            new Vec4(1, -1, -1, 0),
-            new Vec4(-1, -1, -1, 0)
+            new Vec4(1, -1, -1, -1),
+            new Vec4(-1, -1, -1, -1)
         ],
         [
-            new Vec4(-1, -1, -1, 0),
-            new Vec4(-1, 1, -1, 0)
+            new Vec4(-1, -1, -1, -1),
+            new Vec4(-1, 1, -1, -1)
         ],
         // back face
         [
-            new Vec4(-1, 1, 1, 0),
-            new Vec4(1, 1, 1, 0),
+            new Vec4(-1, 1, 1, -1),
+            new Vec4(1, 1, 1, -1),
         ],
         [
-            new Vec4(1, 1, 1, 0),
-            new Vec4(1, -1, 1, 0)
+            new Vec4(1, 1, 1, -1),
+            new Vec4(1, -1, 1, -1)
         ],
         [
-            new Vec4(1, -1, 1, 0),
-            new Vec4(-1, -1, 1, 0)
+            new Vec4(1, -1, 1, -1),
+            new Vec4(-1, -1, 1, -1)
         ],
         [
-            new Vec4(-1, -1, 1, 0),
-            new Vec4(-1, 1, 1, 0)
+            new Vec4(-1, -1, 1, -1),
+            new Vec4(-1, 1, 1, -1)
         ],
         // lateral edges
         [
-            new Vec4(-1, 1, -1, 0),
-            new Vec4(-1, 1, 1, 0)
+            new Vec4(-1, 1, -1, -1),
+            new Vec4(-1, 1, 1, -1)
         ],
         [
-            new Vec4(1, 1, -1, 0),
-            new Vec4(1, 1, 1, 0)
+            new Vec4(1, 1, -1, -1),
+            new Vec4(1, 1, 1, -1)
         ],
         [
-            new Vec4(1, -1, -1, 0),
-            new Vec4(1, -1, 1, 0)
+            new Vec4(1, -1, -1, -1),
+            new Vec4(1, -1, 1, -1)
         ],
         [
-            new Vec4(-1, -1, -1, 0),
-            new Vec4(-1, -1, 1, 0)
+            new Vec4(-1, -1, -1, -1),
+            new Vec4(-1, -1, 1, -1)
         ],
         /*  W=1 Cube  */
         // front face
@@ -251,35 +258,35 @@ const mainScene = new Scene(
         ],
         /*  Dimensional Edges  */
         [
-            new Vec4(-1, 1, -1, 0),
+            new Vec4(-1, 1, -1, -1),
             new Vec4(-1, 1, -1, 1)
         ],
         [
-            new Vec4(1, 1, -1, 0),
+            new Vec4(1, 1, -1, -1),
             new Vec4(1, 1, -1, 1)
         ],
         [
-            new Vec4(1, -1, -1, 0),
+            new Vec4(1, -1, -1, -1),
             new Vec4(1, -1, -1, 1)
         ],
         [
-            new Vec4(-1, -1, -1, 0),
+            new Vec4(-1, -1, -1, -1),
             new Vec4(-1, -1, -1, 1)
         ],
         [
-            new Vec4(-1, 1, 1, 0),
+            new Vec4(-1, 1, 1, -1),
             new Vec4(-1, 1, 1, 1)
         ],
         [
-            new Vec4(1, 1, 1, 0),
+            new Vec4(1, 1, 1, -1),
             new Vec4(1, 1, 1, 1)
         ],
         [
-            new Vec4(1, -1, 1, 0),
+            new Vec4(1, -1, 1, -1),
             new Vec4(1, -1, 1, 1)
         ],
         [
-            new Vec4(-1, -1, 1, 0),
+            new Vec4(-1, -1, 1, -1),
             new Vec4(-1, -1, 1, 1)
         ]
     ],
@@ -290,7 +297,8 @@ const mainScene = new Scene(
 )
 
 document.getElementById("w").addEventListener("input", (e) => {
-    mainScene.camera.pos.w = parseFloat(e.target.value)
+
+    mainScene.theta = parseFloat(e.target.value)
 
     mainScene.render(canvas, ctx)
 })

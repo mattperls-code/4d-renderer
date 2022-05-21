@@ -2,6 +2,4 @@
 
 Interesting programming prompt from my physics teacher.
 
-It projects into 3d space and then projects it again into 2d space to be rendered using a standard camera transform.
-
-The hard coded demo is a unit hypercube with fourth dimensional basis vector (1, 1, 1).
+It rotates a unit hypercube in 4d, projects to 3d, and then projects again to 2d so it can be rendered in screen space.
